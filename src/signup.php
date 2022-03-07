@@ -6,7 +6,9 @@ if (isset($_POST['submit'])){
     $unum=$_POST['num'];
     $uemail=$_POST['email'];
     $upass=$_POST['password'];
-$user1=new User($uname,$unum,$uemail,$upass);
+    $role="user";
+    $auth=0;
+$user1=new User($uname,$unum,$uemail,$upass,$role,$auth);
 $user1->addUser($user1);
 }
 

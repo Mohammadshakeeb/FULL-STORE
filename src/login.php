@@ -7,24 +7,20 @@ if (isset($_POST['submit'])){
     $upass=$_POST['password'];
     $uname="username";
     $unum="usernumber";
+    $role="user";
+    $auth=0;
     // echo $uemail;
     // echo $upass;
     if(!isset($_SESSION['login'])){
         $_SESSION['login']=array();
     }
-    $user1=new User($uname,$unum,$uemail,$upass);
-    // if($user1->checkUser($uemail,$upass)=='yes'){
-    //     header("Location:/dashboard.php");
-    // }
+    $user1=new User($uname,$unum,$uemail,$upass,$role,$auth);
+   
     $_SESSION['count']=0;
 }
 
     $user1->checkUser($uemail,$upass);
 
-    //     if(!$val){
-    //    header('location:login.html');
-    //     }
-  
-    // header('location:login.html');
+   
 
 ?>

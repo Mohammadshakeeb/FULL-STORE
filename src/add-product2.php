@@ -1,3 +1,29 @@
+<?php
+session_start();
+include("classes/DB.php");
+$id=$_GET['id'];
+if(!isset($_SESSION['edit'])){
+    $_SESSION['edit']=array();
+}
+$sql= DB::getInstance()->prepare("select * FROM products WHERE product_id = '$id' ");
+    $sql->execute();
+    $result = $sql->setFetchMode(PDO::FETCH_ASSOC);
+    foreach(new RecursiveArrayIterator($sql->fetchAll()) as $k=>$v) {
+
+           if($v){
+
+            $id=$v['product_id'];
+            $name=$v['product_name'];
+            $price=$v['product_price'];
+            $category=$v['product_category'];
+            $des=$v['description'];
+            //array_push($_SESSION['edit'],$v['Role']);
+           // array_push($_SESSION['login'],$v['auth']);
+
+    }
+ }
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -9,7 +35,8 @@
     <title>Dashboard Template · Bootstrap v5.1</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
-
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     
 
     <!-- Bootstrap core CSS -->
@@ -57,7 +84,7 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="dashboard.html">
+            <a class="nav-link active" aria-current="page" href="dashboard.php">
               <span data-feather="home"></span>
               Dashboard
             </a>
@@ -98,7 +125,7 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Add Product</h1>
+        <h1 class="h2">Update Product</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -111,49 +138,52 @@
         </div>
       </div>
 
-      <form class="row g-3">
+      <form method="POST" action="update.php" class="row g-3">
         <div class="col-md-6">
-          <label for="inputEmail4" class="form-label">Email</label>
-          <input type="email" class="form-control" id="inputEmail4">
+          <label for="inputEmail4" class="form-label">Product ID</label>
+          <input type="text" name="id" value="<?php echo $id; ?> " class="form-control" id="inputEmail4">
         </div>
         <div class="col-md-6">
-          <label for="inputPassword4" class="form-label">Password</label>
-          <input type="password" class="form-control" id="inputPassword4">
+          <label for="inputPassword4" class="form-label">Product Name</label>
+          <input type="text" name="name" value="<?php echo $name; ?> " class="form-control" id="inputPassword4">
         </div>
         <div class="col-12">
-          <label for="inputAddress" class="form-label">Address</label>
-          <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+          <label for="inputAddress" class="form-label">Product Price</label>
+          <input type="text" value="<?php echo $price; ?> " class="form-control" name="price" id="inputAddress" >
         </div>
         <div class="col-12">
-          <label for="inputAddress2" class="form-label">Address 2</label>
-          <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+          <label for="inputAddress2" class="form-label">Product Image</label>
+          <input type="file" name="image" class="form-control" id="inputAddress2" >
         </div>
         <div class="col-md-6">
-          <label for="inputCity" class="form-label">City</label>
-          <input type="text" class="form-control" id="inputCity">
+          <label for="inputCity" class="form-label">Product Category</label>
+          <input type="text" value="<?php echo $category; ?> " name="category" class="form-control" id="inputCity">
         </div>
         <div class="col-md-4">
-          <label for="inputState" class="form-label">State</label>
+          <!-- <label for="inputState" class="form-label">Product Description</label>
           <select id="inputState" class="form-select">
             <option selected>Choose...</option>
             <option>...</option>
-          </select>
+          </select> -->
         </div>
-        <div class="col-md-2">
-          <label for="inputZip" class="form-label">Zip</label>
-          <input type="text" class="form-control" id="inputZip">
+        <div class="col-md-12">
+          <label for="inputZip" class="form-label">Product Description</label>
+          <input type="text" value="<?php echo $des; ?> " name="description" class="form-control" id="inputZip">
         </div>
         <div class="col-12">
+          <button type="submit" name="update" class="btn btn-primary">Update Product</button>
+        </div>
+        <!-- <div class="col-12">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="gridCheck">
             <label class="form-check-label" for="gridCheck">
               Check me out
-            </label>
+            </label> -->
           </div>
         </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary">Add Product</button>
-        </div>
+        <!-- <div class="col-12">
+          <button type="submit" name="add" class="btn btn-primary">Add Product</button>
+        </div> -->
       </form>      
     </main>
   </div>

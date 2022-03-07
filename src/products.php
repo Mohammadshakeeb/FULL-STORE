@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("classes/DB.php");
-$sql= DB::getInstance()->prepare("SELECT * FROM users");
+$sql= DB::getInstance()->prepare("SELECT * FROM products");
 $sql->execute();
 $result = $sql->setFetchMode(PDO::FETCH_ASSOC);
 ?>
@@ -16,8 +16,8 @@ $result = $sql->setFetchMode(PDO::FETCH_ASSOC);
     <title>Dashboard Template · Bootstrap v5.1</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     
 
     <!-- Bootstrap core CSS -->
@@ -45,7 +45,6 @@ $result = $sql->setFetchMode(PDO::FETCH_ASSOC);
     <link href="./assets/css/dashboard.css" rel="stylesheet">
   </head>
   <body>
-   
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
@@ -78,7 +77,7 @@ $result = $sql->setFetchMode(PDO::FETCH_ASSOC);
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="products.php">
+            <a class="nav-link" href="#">
               <span data-feather="shopping-cart"></span>
               Products
             </a>
@@ -101,13 +100,46 @@ $result = $sql->setFetchMode(PDO::FETCH_ASSOC);
               Integrations
             </a>
           </li>
-        </ul>        
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Saved reports</span>
+          <a class="link-secondary" href="#" aria-label="Add a new report">
+            <span data-feather="plus-circle"></span>
+          </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Current month
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Last quarter
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Social engagement
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file-text"></span>
+              Year-end sale
+            </a>
+          </li>
+        </ul>
       </div>
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
+        <h1 class="h2">Products</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -120,34 +152,49 @@ $result = $sql->setFetchMode(PDO::FETCH_ASSOC);
         </div>
       </div>
 
-      <h2>USERS</h2>
+      <form class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+          <label class="visually-hidden" for="inlineFormInputGroupUsername">Search</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter id,name...">
+          </div>
+        </div>
+      
+        
+      
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        <div class="col-12">
+          <a class="btn btn-success" href="add-product.php">Add Product</a>
+        </div>
+      </form>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
-              <th scope="col">ID</th>
-              <th scope="col">NAME</th>
-              <th scope="col">EMAIL</th>
-              <th scope="col">PASSWORD</th>
-              <th scope="col">NUMBER</th>
-              <th scope="col">ACCESS</th>
-              <th scope="col">Permission</th>
+              <th scope="col">PRODUCT ID</th>
+              <th scope="col">PRODUCT NAME</th>
+              <th scope="col">PRODUCT PRICE</th>
+              <th scope="col">PRODUCT IMAGE</th>
+              <th scope="col">PRODUCT CATEGORY</th>
+              <th scope="col">PRODUCT DESCRIPTION</th>
             </tr>
           </thead>
           <tbody>
-            <?php
+          <?php
             $html="";
             foreach(new RecursiveArrayIterator($sql->fetchAll()) as $k=>$v) {
-              $html.='<form method="POST" action="access.php"<tr>
-              <td>'.$v['user_id'].'</td>
-              <td>'.$v['username'].'</td>
-              <td>'.$v['email'].'</td>
-              <td>'.$v['pasword'].'</td>
-              <td>'.$v['unum'].'</td>
-              <td>'.$v['auth'].'</td>
-              <td><input type="hidden" name="id" value='.$v['user_id'].'>
-              <input type="hidden" name="auth" value='.$v['auth'].'>
-              <button type ="submit" id="change" value='.$v['user_id'].' name="approved">APPROVE/RESTRICT</button>
+              $html.='<form method="POST" action="pro.php"<tr>
+              <td>'.$v['product_id'].'</td>
+              <td>'.$v['product_name'].'</td>
+              <td>'.$v['product_price'].'</td>
+              <td><img src="images/'.$v['image'].'"</td>
+              <td>'.$v['product_category'].'</td>
+              <td>'.$v['description'].'</td>
+              <td><input type="hidden" name="id" value='.$v['product_id'].'>
+              <a href="add-product2.php?id='.$v['product_id'].'" name="edit" id="change" value='.$v['product_id'].' name="edit">EDIT</a>
+              <button type ="submit" name="delete" id="change" value='.$v['product_id'].' name="delete">DELETE</button>
               </tr></form>';
             }
             $html.="";
@@ -155,29 +202,22 @@ $result = $sql->setFetchMode(PDO::FETCH_ASSOC);
            ?>
           </tbody>
         </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
       </div>
     </main>
   </div>
 </div>
-<?php
-
-// if(isset($_SESSION['login'])){
-//   echo "<pre><center>";
-//   print_r($_SESSION['login']);
-//   echo $_SESSION['login'][0];
-//   echo "</pre></center>";
-
-// }
-?>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   </body>
 </html>
-
-
-
-
-
-
